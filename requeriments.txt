@@ -1,0 +1,6 @@
+pip install opencv-python dlib numpy
+pip install tensorflow opencv-python keras
+pip install deepface
+
+
+
