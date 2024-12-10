@@ -3,7 +3,7 @@ import cv2
 import numpy as np
 import tkinter as tk
 class FaceTrainer:
-    def __init__(self, dataset_dir, model_path=os.path.join("..", "models", "face_model.yml")):
+    def __init__(self, dataset_dir, model_path=os.path.join( "models", "face_model.yml")):
         self.dataset_dir = dataset_dir
         self.model_path = model_path
         self.faces = []

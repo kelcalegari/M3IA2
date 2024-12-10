@@ -8,9 +8,9 @@ from src.core.Database import Database
 
 
 class FaceRecognizer:
-    def __init__(self, root, model_path=os.path.join("..", "models", "face_model.yml"),
+    def __init__(self, root, model_path=os.path.join( "models", "face_model.yml"),
                  cascade_path=cv2.data.haarcascades + 'haarcascade_frontalface_default.xml',
-                 db_path=os.path.join(os.path.dirname(__file__), '../../database.sqlite')):
+                 db_path=os.path.join(os.path.dirname(__file__), '../database.sqlite')):
         self.root = root
         self.model_path = model_path
         self.cascade_path = cascade_path

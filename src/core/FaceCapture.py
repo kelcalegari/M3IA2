@@ -1,8 +1,9 @@
 import os
-
 import cv2
 from PIL import Image, ImageTk
 import tkinter as tk
+from tkinter import ttk
+
 class FaceCapture:
     def __init__(self, root, dataset_dir=os.path.join(os.path.dirname(__file__), '../../dataset'),
                  face_cascade_path=cv2.data.haarcascades + 'haarcascade_frontalface_default.xml'):
@@ -20,12 +21,19 @@ class FaceCapture:
         self.count = 0
         self.root.geometry("500x650")
 
+        # Cria uma barra de progresso para exibir o tempo restante
+        progress_bar = ttk.Progressbar(self.root, orient="horizontal", length=400, mode="determinate", maximum=num_images)
+        progress_bar.pack(pady=10)
+
+        # Label para exibir a contagem restante
+        progress_label = tk.Label(self.root, text=f"Imagens restantes: {num_images}", font=("Arial", 12))
+        progress_label.pack()
+
         # Cria um canvas para exibir o feed da câmera
         self.canvas = tk.Canvas(self.root, width=640, height=480)
         self.canvas.pack()
 
         def update_frame():
-
             if not self.running:
                 return
 
@@ -42,6 +50,10 @@ class FaceCapture:
                         cv2.imwrite(f"{self.dataset_dir}/user_{user_id}_{self.count}.jpg", face)
                         self.count += 1
 
+                        # Atualiza a barra de progresso e o texto
+                        progress_bar['value'] = self.count
+                        progress_label.config(text=f"Imagens restantes: {num_images - self.count}")
+
                 # Converte o frame BGR para RGB
                 frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
                 img = Image.fromarray(frame)
@@ -51,6 +63,11 @@ class FaceCapture:
 
             if self.count >= num_images:
                 self.stop_capture()
+
+                # Remove a barra de progresso e o texto
+                progress_bar.destroy()
+                progress_label.destroy()
+
                 print("Captura finalizada.")
                 if self.callback:  # Chama o callback para voltar ao menu
                     self.root.geometry("500x400")
@@ -61,6 +78,7 @@ class FaceCapture:
             self.root.after(10, update_frame)
 
         update_frame()
+
 
     def stop_capture(self):
         """Para a captura e libera os recursos."""

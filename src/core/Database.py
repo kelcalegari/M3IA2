@@ -70,3 +70,12 @@ class Database:
         except sqlite3.Error as e:
             print(f"Erro ao verificar usuários: {e}")
             return False
+    def delete_all_users(self):
+        """Deleta todos os registros da tabela 'users'."""
+        try:
+            with self._connect() as conn:
+                cursor = conn.cursor()
+                cursor.execute("DELETE FROM users")
+                conn.commit()
+        except sqlite3.Error as e:
+            print(f"Erro ao deletar usuários: {e}")
